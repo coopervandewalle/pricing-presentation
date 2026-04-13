@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopify Plus B2B Pricing Options</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --shopify-green: #008060;
+            --shopify-green-dark: #004c3f;
+            --shopify-green-light: #95bf47;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6b7177;
+            --bg-light: #f6f6f7;
+            --bg-white: #ffffff;
+            --border-color: #e1e3e5;
+            --accent-blue: #2c6ecb;
+            --accent-purple: #9c6ade;
+            --accent-orange: #f49342;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-light);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--shopify-green-dark) 0%, var(--shopify-green) 100%);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .nav {
+            background: var(--bg-white);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            border: 2px solid var(--border-color);
+            background: var(--bg-white);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            color: var(--text-primary);
+        }
+
+        .nav-btn:hover {
+            border-color: var(--shopify-green);
+            color: var(--shopify-green);
+        }
+
+        .nav-btn.active {
+            background: var(--shopify-green);
+            border-color: var(--shopify-green);
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+
+        .pricing-card {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid var(--border-color);
+        }
+
+        .pricing-card.highlight {
+            border: 2px solid var(--shopify-green);
+            position: relative;
+        }
+
+        .pricing-card.highlight::before {
+            content: 'Recommended';
+            position: absolute;
+            top: -12px;
+            left: 24px;
+            background: var(--shopify-green);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .brand-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .brand-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .brand-revenue {
+            background: var(--bg-light);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            color: var(--shopify-green-dark);
+        }
+
+        .pricing-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .pricing-item {
+            background: var(--bg-light);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .pricing-item-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .pricing-item-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .pricing-item-value.green {
+            color: var(--shopify-green);
+        }
+
+        .pricing-total {
+            background: linear-gradient(135deg, var(--shopify-green-dark) 0%, var(--shopify-green) 100%);
+            color: white;
+            padding: 24px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pricing-total-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .pricing-total-value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .formula-box {
+            background: #f8f9fa;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin: 16px 0;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 0.9rem;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 32px;
+        }
+
+        .comparison-card {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 28px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .comparison-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .comparison-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--shopify-green);
+            margin-bottom: 8px;
+        }
+
+        .comparison-detail {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #e8f5f0 0%, #f0f9f6 100%);
+            border: 1px solid #b8e0d2;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 24px 0;
+        }
+
+        .info-box h4 {
+            color: var(--shopify-green-dark);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-box p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .benefits-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .benefits-list li {
+            padding: 12px 0;
+            padding-left: 32px;
+            position: relative;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .benefits-list li:last-child {
+            border-bottom: none;
+        }
+
+        .benefits-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--shopify-green);
+            font-weight: 700;
+        }
+
+        .option-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        .badge-1 { background: #e3f2fd; color: #1565c0; }
+        .badge-2 { background: #f3e5f5; color: #7b1fa2; }
+        .badge-3 { background: #fff3e0; color: #e65100; }
+
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 24px;
+        }
+
+        .summary-table th,
+        .summary-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .summary-table th {
+            background: var(--bg-light);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+        }
+
+        .summary-table td {
+            font-size: 0.95rem;
+        }
+
+        .summary-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .highlight-row {
+            background: #f0f9f6;
+        }
+
+        .highlight-row td {
+            font-weight: 600;
+            color: var(--shopify-green-dark);
+        }
+
+        .vs-divider {
+            text-align: center;
+            margin: 32px 0;
+            position: relative;
+        }
+
+        .vs-divider::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            height: 1px;
+            background: var(--border-color);
+        }
+
+        .vs-divider span {
+            background: var(--bg-light);
+            padding: 8px 20px;
+            position: relative;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .scenario-box {
+            background: var(--bg-white);
+            border: 2px solid var(--shopify-green);
+            border-radius: 16px;
+            padding: 32px;
+            margin: 24px 0;
+        }
+
+        .scenario-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .scenario-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .growth-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--shopify-green);
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .pricing-breakdown {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-total {
+                flex-direction: column;
+                text-align: center;
+                gap: 12px;
+            }
+
+            .brand-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Shopify Plus B2B Pricing</h1>
+        <p>Multi-Brand Pricing Options</p>
+    </div>
+
+    <nav class="nav">
+        <div class="nav-container">
+            <button class="nav-btn active" data-section="overview">Overview</button>
+            <button class="nav-btn" data-section="option1">Option 1: Separate Contracts</button>
+            <button class="nav-btn" data-section="option2">Option 2: Combined Contract</button>
+            <button class="nav-btn" data-section="option3">Option 3: Fixed Rate</button>
+            <button class="nav-btn" data-section="comparison">Comparison</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Overview Section -->
+        <section id="overview" class="section active">
+            <h2 class="section-title">Pricing Options Overview</h2>
+            <p class="section-subtitle">Three flexible approaches to bring your 4 brands onto Shopify Plus</p>
+
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <span class="option-badge badge-1">Option 1</span>
+                    <h3>Separate Contracts</h3>
+                    <p class="comparison-detail">Each brand signs an individual contract when they're ready to migrate. Maximum flexibility for phased rollout.</p>
+                </div>
+                <div class="comparison-card">
+                    <span class="option-badge badge-2">Option 2</span>
+                    <h3>Combined Contract</h3>
+                    <p class="comparison-detail">All 4 brands under one master agreement. Better pricing through consolidated volume.</p>
+                </div>
+                <div class="comparison-card">
+                    <span class="option-badge badge-3">Option 3</span>
+                    <h3>Fixed Rate Fee</h3>
+                    <p class="comparison-detail">Predictable flat monthly fee that doesn't scale with revenue growth.</p>
+                </div>
+            </div>
+
+            <div class="pricing-card" style="margin-top: 40px;">
+                <h3 style="margin-bottom: 20px;">Your Brands at a Glance</h3>
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th>Brand</th>
+                            <th>Annual Revenue</th>
+                            <th>Monthly Revenue</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Adidas</strong></td>
+                            <td>$58,000</td>
+                            <td>$4,833</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Carhartt</strong></td>
+                            <td>$24,000,000</td>
+                            <td>$2,000,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>French Toast</strong></td>
+                            <td>$14,000,000</td>
+                            <td>$1,166,667</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Elderwear</strong></td>
+                            <td>$33,000,000</td>
+                            <td>$2,750,000</td>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td><strong>Total</strong></td>
+                            <td><strong>$71,058,000</strong></td>
+                            <td><strong>$5,921,500</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Option 1: Separate Contracts -->
+        <section id="option1" class="section">
+            <span class="option-badge badge-1">Option 1</span>
+            <h2 class="section-title">Separate Contracts</h2>
+            <p class="section-subtitle">Each brand signs an individual Shopify Plus contract when ready</p>
+
+            <div class="info-box">
+                <h4>📋 How This Works</h4>
+                <p>Each brand operates under its own Shopify Plus agreement with individual pricing based on their specific revenue. This offers maximum flexibility for phased migrations.</p>
+                <div class="formula-box">
+                    Monthly Fee = Greater of (Monthly Minimum) OR (Monthly GMV × 0.18% VPF)
+                </div>
+            </div>
+
+            <!-- Adidas -->
+            <div class="pricing-card">
+                <div class="brand-header">
+                    <span class="brand-name">Adidas</span>
+                    <span class="brand-revenue">$58,000 / year</span>
+                </div>
+                <div class="pricing-breakdown">
+                    <div class="pricing-item">
+                        <div class="pricing-item-label">Monthly Revenue</div>
+                        <div class="pricing-item-value">$4,833</div>
+                    </div>
+                    <div class="pricing-item">
+                        <div class="pricing-item-label">VPF (0.18%)</div>
+                        <div class="pricing-item-value">$8.70</div>
+                    </div>
+                    <div class="pricing-item">
+                        <div class="pricing-item-label">Monthly Minimum</div>
+                        <div class="pricing-item-value">$2,300</div>
+                    </div>
+                </div>
+                <div class="pricing-total">
+                    <span class="pricing-total-label">Monthly Platform Fee (Min. applies)</span>
+                    <span class="pricing-total-value">$2,300/mo</span>
+                </div>
+            </div>
+
+            <!-- Carhartt -->
+            <div class="pricing-card">
+                <div class="brand-header">
+                    <span class="brand-name">Carhartt</span>
+                    <span class="brand-revenue">$24,000,000 / year</span>
+                </div>
+                <div class="pricing-breakdown">
+                    <div class="pricing-item">
+                        <div class="pricing-item-label">Monthly Revenue</div>
+                        <div class="pricing-item-value">$2,000,000</div>
+                    </div>
+                    <div class="pricing-item">
+                        <div class="pricing-item-label">VPF (0.18%)</div>
+                        <div class="pricing-item-value">$3,600</div>
+                    </div>
+                    <div class="pricing-item">
+                        <div class="pricing-item-label">Monthly Minimum</div>
+                        <div class="pricing-item-value">$2,300</div>
+                    </div>
+                </div>
+                <div class="pricing-total">
+                    <span class="pricing-total-label">Monthly Platform Fee (VPF applies)</span>
+                    <span class="pricing-total-value">$3,600/mo</span>
+                </div>
+            </div>
+
+            <!-- French Toast -->
+            <div class="pricing-card">
+                <div class="brand-header">
+                    <span class="brand-name">French Toast</span>
+                    <span class="brand-revenue">$14,000,000 / year</span>
+                </div>
+                <div class="pricing-breakdown">
+                    <div class="pricing-item">
+                        <div class="pricing-item-label">Monthly Revenue</div>
+                        <div class="pricing-item-value">$1,166,667</div>
+                    </div>
+                    <div class="pricing-item">
+                        <div class="pricing-item-label">VPF (0.18%)</div>
+                        <div class="pricing-item-value">$2,100</div>
+                    </div>
+                    <div class="pricing-item">
+                        <div class="pricing-item-label">Monthly Minimum</div>
+                        <div class="pricing-item-value">$2,300</div>
+                    </div>
+                </div>
+                <div class="pricing-total">
+                    <span class="pricing-total-label">Monthly Platform Fee (Min. applies)</span>
+                    <span class="pricing-total-value">$2,300/mo</span>
+                </div>
+            </div>
+
+            <!-- Elderwear -->
+            <div class="pricing-card">
+                <div class="brand-header">
+                    <span class="brand-name">Elderwear</span>
+                    <span class="brand-revenue">$33,000,000 / year</span>
+                </div>
+                <div class="pricing-breakdown">
+                    <div class="pricing-item">
+                        <div class="pricing-item-label">Monthly Revenue</div>
+                        <div class="pricing-item-value">$2,750,000</div>
+                    </div>
+                    <div class="pricing-item">
+                        <div class="pricing-item-label">VPF (0.18%)</div>
+                        <div class="pricing-item-value">$4,950</div>
+                    </div>
+                    <div class="pricing-item">
+                        <div class="pricing-item-label">Monthly Minimum</div>
+                        <div class="pricing-item-value">$2,300</div>
+                    </div>
+                </div>
+                <div class="pricing-total">
+                    <span class="pricing-total-label">Monthly Platform Fee (VPF applies)</span>
+                    <span class="pricing-total-value">$4,950/mo</span>
+                </div>
+            </div>
+
+            <!-- Option 1 Summary -->
+            <div class="pricing-card" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
+                <h3 style="margin-bottom: 24px;">Option 1 Summary: Separate Contracts</h3>
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th>Brand</th>
+                            <th>Annual Revenue</th>
+                            <th>Monthly Fee</th>
+                            <th>Basis</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Adidas</td>
+                            <td>$58,000</td>
+                            <td>$2,300</td>
+                            <td>Minimum</td>
+                        </tr>
+                        <tr>
+                            <td>Carhartt</td>
+                            <td>$24,000,000</td>
+                            <td>$3,600</td>
+                            <td>VPF</td>
+                        </tr>
+                        <tr>
+                            <td>French Toast</td>
+                            <td>$14,000,000</td>
+                            <td>$2,300</td>
+                            <td>Minimum</td>
+                        </tr>
+                        <tr>
+                            <td>Elderwear</td>
+                            <td>$33,000,000</td>
+                            <td>$4,950</td>
+                            <td>VPF</td>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td><strong>Total</strong></td>
+                            <td><strong>$71,058,000</strong></td>
+                            <td><strong>$13,150/mo</strong></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Option 2: Combined Contract -->
+        <section id="option2" class="section">
+            <span class="option-badge badge-2">Option 2</span>
+            <h2 class="section-title">Combined Contract</h2>
+            <p class="section-subtitle">All 4 brands under one master Shopify Plus agreement</p>
+
+            <div class="info-box">
+                <h4>🤝 Volume Benefits</h4>
+                <p>Consolidating all brands under a single contract provides leverage for better pricing and opens the opportunity to negotiate a reduced VPF rate below the standard 0.18%.</p>
+            </div>
+
+            <div class="scenario-box">
+                <div class="scenario-header">
+                    <span class="scenario-title">Combined Pricing Scenario</span>
+                    <span class="brand-revenue">$71,058,000 / year total</span>
+                </div>
+
+                <div class="pricing-breakdown">
+                    <div class="pricing-item">
+                        <div class="pricing-item-label">Total Monthly Revenue</div>
+                        <div class="pricing-item-value">$5,921,500</div>
+                    </div>
+                    <div class="pricing-item">
+                        <div class="pricing-item-label">Combined VPF (0.18%)</div>
+                        <div class="pricing-item-value">$10,659</div>
+                    </div>
+                    <div class="pricing-item">
+                        <div class="pricing-item-label">Combined Minimum</div>
+                        <div class="pricing-item-value">$9,200</div>
+                    </div>
+                </div>
+
+                <div class="formula-box">
+                    $5,921,500/mo × 0.18% = <strong>$10,659/mo</strong>
+                </div>
+
+                <div class="pricing-total">
+                    <span class="pricing-total-label">Monthly Platform Fee (VPF applies)</span>
+                    <span class="pricing-total-value">$10,659/mo</span>
+                </div>
+            </div>
+
+            <div class="pricing-card">
+                <h3 style="margin-bottom: 20px;">Potential for Reduced VPF</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">With $71M in combined annual volume, there may be opportunity to negotiate a lower VPF rate:</p>
+                
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th>VPF Rate</th>
+                            <th>Monthly Fee</th>
+                            <th>Annual Cost</th>
+                            <th>Savings vs 0.18%</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>0.18% (Standard)</td>
+                            <td>$10,659</td>
+                            <td>$127,908</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td>0.17%</td>
+                            <td>$10,067</td>
+                            <td>$120,804</td>
+                            <td>$7,104/yr</td>
+                        </tr>
+                        <tr>
+                            <td>0.16%</td>
+                            <td>$9,474</td>
+                            <td>$113,688</td>
+                            <td>$14,220/yr</td>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td>0.15%</td>
+                            <td>$8,882</td>
+                            <td>$106,584</td>
+                            <td>$21,324/yr</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pricing-card">
+                <h3 style="margin-bottom: 16px;">Benefits of Combined Contract</h3>
+                <ul class="benefits-list">
+                    <li>Single point of contract management across all brands</li>
+                    <li>Leverage combined volume for better VPF rates</li>
+                    <li>Unified billing and invoicing</li>
+                    <li>Streamlined support and account management</li>
+                    <li>Easier expansion store additions</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Option 3: Fixed Rate -->
+        <section id="option3" class="section">
+            <span class="option-badge badge-3">Option 3</span>
+            <h2 class="section-title">Fixed Rate Fee</h2>
+            <p class="section-subtitle">Predictable flat monthly pricing that doesn't scale with revenue</p>
+
+            <div class="info-box">
+                <h4>📊 What is a Fixed Rate Fee?</h4>
+                <p>Instead of the Variable Platform Fee (VPF) model where costs scale with your GMV, a Fixed Rate plan provides a consistent monthly fee regardless of how much revenue you process through Shopify.</p>
+            </div>
+
+            <div class="pricing-card">
+                <h3 style="margin-bottom: 24px;">VPF vs Fixed Rate Comparison</h3>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-card" style="border: 2px solid var(--border-color);">
+                        <h4 style="margin-bottom: 16px; color: var(--text-secondary);">Variable Platform Fee (VPF)</h4>
+                        <ul style="text-align: left; list-style: none;">
+                            <li style="padding: 8px 0; border-bottom: 1px solid var(--border-color);">✓ Pay as you grow</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid var(--border-color);">✓ Lower cost at lower volumes</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid var(--border-color);">✗ Costs increase with revenue</li>
+                            <li style="padding: 8px 0;">✗ Less predictable budgeting</li>
+                        </ul>
+                    </div>
+                    <div class="comparison-card" style="border: 2px solid var(--shopify-green);">
+                        <h4 style="margin-bottom: 16px; color: var(--shopify-green);">Fixed Rate Fee</h4>
+                        <ul style="text-align: left; list-style: none;">
+                            <li style="padding: 8px 0; border-bottom: 1px solid var(--border-color);">✓ Predictable monthly costs</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid var(--border-color);">✓ Cost stays flat as you grow</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid var(--border-color);">✓ Better for high-growth scenarios</li>
+                            <li style="padding: 8px 0;">✓ Easier budget forecasting</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="scenario-box">
+                <h3 style="margin-bottom: 24px;">Growth Scenario Example</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">You mentioned expecting revenue growth once on the new platform. Here's how Fixed Rate protects against scaling costs:</p>
+                
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Annual Revenue</th>
+                            <th>VPF Model (0.18%)</th>
+                            <th>Fixed Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Current State</td>
+                            <td>$71,058,000</td>
+                            <td>$10,659/mo</td>
+                            <td rowspan="3" style="vertical-align: middle; text-align: center; background: #f0f9f6; font-weight: 600; color: var(--shopify-green);">Same Fixed<br>Monthly Rate</td>
+                        </tr>
+                        <tr>
+                            <td>+$10M Growth</td>
+                            <td>$81,058,000</td>
+                            <td>$12,159/mo</td>
+                        </tr>
+                        <tr>
+                            <td>+$20M Growth</td>
+                            <td>$91,058,000</td>
+                            <td>$13,659/mo</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box" style="margin-top: 24px; margin-bottom: 0;">
+                    <h4>💡 Key Insight</h4>
+                    <p>If you grow by $10M in the first year on Shopify, under VPF you'd pay an additional ~$1,500/month. With Fixed Rate, your costs remain unchanged—letting you reinvest those savings back into growth.</p>
+                </div>
+            </div>
+
+            <div class="pricing-card">
+                <h3 style="margin-bottom: 16px;">When Fixed Rate Makes Sense</h3>
+                <ul class="benefits-list">
+                    <li>You anticipate significant revenue growth in the near term</li>
+                    <li>Budget predictability is important for your finance team</li>
+                    <li>You want to decouple platform costs from business success</li>
+                    <li>You're planning aggressive marketing or expansion initiatives</li>
+                    <li>Historical patterns show seasonal or rapid growth periods</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Comparison Section -->
+        <section id="comparison" class="section">
+            <h2 class="section-title">Options Comparison</h2>
+            <p class="section-subtitle">Side-by-side view of all three pricing approaches</p>
+
+            <div class="pricing-card">
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th>Criteria</th>
+                            <th>Option 1: Separate</th>
+                            <th>Option 2: Combined</th>
+                            <th>Option 3: Fixed</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Monthly Cost</strong></td>
+                            <td>$13,150/mo</td>
+                            <td>$10,659/mo</td>
+                            <td>To be discussed</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Annual Cost</strong></td>
+                            <td>$157,800/yr</td>
+                            <td>$127,908/yr</td>
+                            <td>To be discussed</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Flexibility</strong></td>
+                            <td>High - phase brands in</td>
+                            <td>Medium - all at once</td>
+                            <td>Medium</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Scales with Growth</strong></td>
+                            <td>Yes - costs increase</td>
+                            <td>Yes - costs increase</td>
+                            <td>No - costs fixed</td>
+                        </tr>
+                        <tr>
+                            <td><strong>VPF Negotiation</strong></td>
+                            <td>Limited per brand</td>
+                            <td>Better leverage</td>
+                            <td>N/A</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Best For</strong></td>
+                            <td>Phased rollout</td>
+                            <td>Cost optimization</td>
+                            <td>High growth plans</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="vs-divider">
+                <span>Savings Analysis</span>
+            </div>
+
+            <div class="comparison-grid">
+<div class="comparison-card">
+                <h3>Option 2 vs Option 1</h3>
+                <div class="comparison-value">$2,491</div>
+                <div class="comparison-detail">Monthly savings with Combined Contract</div>
+                <p style="margin-top: 16px; font-size: 0.9rem; color: var(--text-secondary);">$29,892 annual savings</p>
+            </div>
+                <div class="comparison-card">
+                    <h3>Growth Protection</h3>
+                    <div class="comparison-value">$1,500+</div>
+                    <div class="comparison-detail">Monthly savings per $10M growth with Fixed Rate</div>
+                    <p style="margin-top: 16px; font-size: 0.9rem; color: var(--text-secondary);">vs VPF model</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navBtns = document.querySelectorAll('.nav-btn');
+            const sections = document.querySelectorAll('.section');
+
+            navBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const targetSection = this.getAttribute('data-section');
+
+                    navBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+
+                    sections.forEach(s => s.classList.remove('active'));
+                    document.getElementById(targetSection).classList.add('active');
+
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
